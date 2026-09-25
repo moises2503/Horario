@@ -39,12 +39,121 @@
             background-color: #ffffff;
             color: #0f172a;
         }
+
+        /* === ESTILOS PARA EL MODO OSCURO (SE ACTIVAN AL AGREGAR LA CLASE .dark AL <html>) === */
+        html.dark body {
+            background-color: #0f172a !important;
+            color: #f8fafc !important;
+        }
+
+        html.dark .bg-white,
+        html.dark .bg-slate-50,
+        html.dark .bg-slate-100,
+        html.dark .bg-gray-50,
+        html.dark .bg-gray-100,
+        html.dark div[class*="shadow-"],
+        html.dark form,
+        html.dark section,
+        html.dark thead,
+        html.dark #tabla-alumnos thead {
+            background-color: #1e293b !important;
+            border-color: #334155 !important;
+            color: #f8fafc !important;
+        }
+
+        html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark label, html.dark p,
+        html.dark thead th, html.dark th, html.dark td {
+            color: #f8fafc !important;
+        }
+
+        html.dark strong,
+        html.dark b,
+        html.dark .font-bold,
+        html.dark .font-black,
+        html.dark .font-semibold {
+            color: #ffffff !important;
+        }
+
+        html.dark .text-slate-500, html.dark .text-slate-600, html.dark .text-slate-700, html.dark .text-gray-500 {
+            color: #cbd5e1 !important;
+        }
+
+        html.dark .bg-purple-100 {
+            background-color: rgba(216, 180, 254, 0.38) !important;
+            color: #1f2937 !important;
+        }
+
+        html.dark .bg-sky-100,
+        html.dark .bg-cyan-100 {
+            background-color: rgba(186, 230, 253, 0.35) !important;
+            color: #0f172a !important;
+        }
+
+        html.dark .bg-slate-200 {
+            background-color: rgba(226, 232, 240, 0.22) !important;
+            color: #0f172a !important;
+        }
+
+        html.dark .bg-purple-100 span,
+        html.dark .bg-sky-100 span,
+        html.dark .bg-cyan-100 span,
+        html.dark .bg-slate-200 span,
+        html.dark .bg-purple-100 *,
+        html.dark .bg-sky-100 *,
+        html.dark .bg-cyan-100 *,
+        html.dark .bg-slate-200 * {
+            color: inherit !important;
+        }
+
+        html.dark input, html.dark select, html.dark textarea {
+            background-color: #0f172a !important;
+            color: #f8fafc !important;
+            border-color: #475569 !important;
+        }
+
+        html.dark select option {
+            background-color: #0f172a !important;
+            color: #f8fafc !important;
+        }
+
+        /* Tabla en Modo Oscuro */
+        html.dark #tabla-alumnos tr {
+            background-color: #1e293b !important;
+            border-bottom: 1px solid #334155 !important;
+        }
+
+        html.dark #tabla-alumnos tr:hover {
+            background-color: #334155 !important;
+        }
+
+        html.dark #tabla-alumnos thead {
+            background-color: #0f172a !important;
+            color: #cbd5e1 !important;
+        }
+
+        html.dark #tabla-alumnos td .text-indigo-400 {
+            color: #818cf8 !important;
+        }
+
+        html.dark #tabla-alumnos td .text-slate-400 {
+            color: #cbd5e1 !important;
+        }
+
+        html.dark #tabla-alumnos .bg-slate-200 {
+            background-color: #0f172a !important;
+        }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 min-h-screen p-4 md:p-8 font-sans relative overflow-x-hidden">
+<body class="bg-slate-100 text-slate-800 min-h-screen p-4 md:p-8 font-sans relative overflow-x-hidden transition-colors duration-300">
 
     <!-- CANVAS ANIMACIÓN DE RED Y NODOS TECH -->
     <canvas id="bg-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
+
+    <!-- BOTÓN REVOLUCIONARIO Y FLOTANTE MODO CLARO / OSCURO -->
+    <button id="theme-toggle" class="fixed top-5 right-5 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-100 px-4 py-2 rounded-full shadow-lg flex items-center gap-2 text-xs font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer">
+        <span id="theme-toggle-icon">🌙</span>
+        <span id="theme-toggle-text">Modo Oscuro</span>
+    </button>
 
     <div class="max-w-6xl mx-auto space-y-8 relative z-10">
         
@@ -191,7 +300,6 @@
                         </tr>
                     </thead>
                     <tbody id="tabla-alumnos" class="divide-y divide-slate-200 bg-white">
-                        <!-- Ejemplo de renderizado de fila corregida en JS -->
                         <tr class="hover:bg-slate-50/80 transition-colors">
                             <td class="p-3.5">
                                 <img src="https://via.placeholder.com/40" class="w-10 h-10 rounded-full object-cover border border-slate-300" alt="Foto">
@@ -232,6 +340,45 @@
         </div>
 
     </div>
+
+    <!-- SCRIPT DE INTERRUPTOR DE TEMA (CLARO / OSCURO) -->
+    <script>
+        (function() {
+            const toggleBtn = document.getElementById('theme-toggle');
+            const icon = document.getElementById('theme-toggle-icon');
+            const text = document.getElementById('theme-toggle-text');
+            const html = document.documentElement;
+
+            function applyTheme(isDark) {
+                if (isDark) {
+                    html.classList.add('dark');
+                    icon.textContent = '☀️';
+                    text.textContent = 'Modo Claro';
+                    localStorage.setItem('hub-theme', 'dark');
+                } else {
+                    html.classList.remove('dark');
+                    icon.textContent = '🌙';
+                    text.textContent = 'Modo Oscuro';
+                    localStorage.setItem('hub-theme', 'light');
+                }
+            }
+
+            // Detectar preferencia guardada o del sistema
+            const savedTheme = localStorage.getItem('hub-theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                applyTheme(true);
+            } else {
+                applyTheme(false);
+            }
+
+            toggleBtn.addEventListener('click', () => {
+                const isCurrentlyDark = html.classList.contains('dark');
+                applyTheme(!isCurrentlyDark);
+            });
+        })();
+    </script>
 
     <!-- SCRIPT DE ANIMACIÓN TIPO HUB TECH -->
     <script>
@@ -318,146 +465,5 @@
             animate();
         })();
     </script>
-    <!-- Copia y pega este bloque antes de </head> para aplicar modo oscuro total (Administrador y Alumno) -->
-<style>
-  /* === MODO OSCURO GLOBAL (ADMINISTRADOR Y ALUMNO) === */
-
-  /* 1. Fondo general de la página y tipografía */
-  body {
-    background-color: #0f172a !important; /* Azul noche profundo */
-    color: #f8fafc !important;
-  }
-
-  /* 2. Tarjetas, paneles, contenedores y formularios */
-  .bg-white, 
-  .bg-slate-50, 
-  .bg-gray-50, 
-  .bg-gray-100, 
-  div[class*="shadow"], 
-  form, 
-  section, 
-  .card {
-    background-color: #1e293b !important; /* Fondo de contenedores */
-    border-color: #334155 !important;
-    color: #f8fafc !important;
-  }
-
-  /* 3. Títulos y Textos generales */
-  h1, h2, h3, h4, h5, h6, label, p, span, strong {
-    color: #f8fafc !important;
-  }
-
-  .text-slate-500, .text-slate-600, .text-gray-500, .text-gray-600 {
-    color: #94a3b8 !important; /* Textos secundarios en gris claro */
-  }
-
-  /* 4. Inputs, Selects y Textareas */
-  input, select, textarea {
-    background-color: #0f172a !important;
-    color: #f8fafc !important;
-    border: 1px solid #475569 !important;
-  }
-
-  input::placeholder, textarea::placeholder {
-    color: #64748b !important;
-  }
-
-  input:focus, select:focus, textarea:focus {
-    border-color: #6366f1 !important;
-    outline: none !important;
-  }
-
-  /* 5. TABLA DE ALUMNOS (Administrador) */
-  #tabla-alumnos tr {
-    background-color: #1e293b !important;
-    border-bottom: 1px solid #334155 !important;
-  }
-
-  #tabla-alumnos tr:hover {
-    background-color: #334155 !important;
-  }
-
-  #tabla-alumnos td .font-semibold.text-white {
-    color: #ffffff !important;
-  }
-
-  #tabla-alumnos td .text-indigo-400 {
-    color: #818cf8 !important; /* Matrícula resaltada */
-    font-weight: 700 !important;
-  }
-
-  #tabla-alumnos td .text-slate-400 {
-    color: #cbd5e1 !important; /* Institución legible */
-  }
-
-  /* Badges Servicio / Residencia */
-  #tabla-alumnos td .bg-blue-900\/50 {
-    background-color: rgba(30, 58, 138, 0.7) !important;
-    color: #93c5fd !important;
-    border: 1px solid #1d4ed8 !important;
-    font-weight: 700 !important;
-  }
-
-  #tabla-alumnos td .bg-purple-900\/50 {
-    background-color: rgba(88, 28, 135, 0.7) !important;
-    color: #e9d5ff !important;
-    border: 1px solid #7e22ce !important;
-    font-weight: 700 !important;
-  }
-
-  /* Barra de progreso de horas acumuladas */
-  #tabla-alumnos .bg-slate-700 {
-    background-color: #0f172a !important;
-  }
-
-  #tabla-alumnos .bg-indigo-500 {
-    background-color: #6366f1 !important;
-  }
-
-  #tabla-alumnos td .text-emerald-400 {
-    color: #4ade80 !important;
-  }
-
-  /* Botones de acción dentro de la tabla */
-  #tabla-alumnos button.bg-amber-600\/30 {
-    background-color: #d97706 !important;
-    color: #ffffff !important;
-    font-weight: 700 !important;
-    border: 1px solid #f59e0b !important;
-  }
-
-  #tabla-alumnos button.bg-amber-600\/30:hover {
-    background-color: #b45309 !important;
-  }
-
-  #tabla-alumnos button.bg-indigo-600\/30 {
-    background-color: #4f46e5 !important;
-    color: #ffffff !important;
-    font-weight: 700 !important;
-    border: 1px solid #6366f1 !important;
-  }
-
-  #tabla-alumnos button.bg-indigo-600\/30:hover {
-    background-color: #4338ca !important;
-  }
-
-  /* Avatar Sin Foto */
-  #tabla-alumnos div.bg-slate-700 {
-    background-color: #334155 !important;
-    color: #94a3b8 !important;
-    border: 1px solid #475569 !important;
-  }
-
-  /* 6. Botones principales del sistema (Formularios / Guardar) */
-  button[type="submit"], .btn-primary {
-    background-color: #4f46e5 !important;
-    color: #ffffff !important;
-    font-weight: 600 !important;
-  }
-
-  button[type="submit"]:hover, .btn-primary:hover {
-    background-color: #4338ca !important;
-  }
-</style>
 </body>
 </html>

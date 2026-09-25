@@ -97,7 +97,7 @@ async function guardarAlumno(e) {
 
         const foto_perfil_url = urlData?.publicUrl;
 
-        // Ajuste de tipo para coincidir con la restricción de Supabase (plural o singular)
+        // Ajuste de tipo para coincidir con la restricción de Supabase
         if (tipo === 'Residencia') {
             tipo = 'Residencias';
         }
@@ -173,53 +173,59 @@ async function cargarAlumnos() {
             selectEntrada.innerHTML += `<option value="${alum.id}">${alum.nombre_completo} (${alum.matricula})</option>`;
         }
 
-        // Fila para tabla de alumnos
+        // Fila para tabla de alumnos (Adaptada a Modo Claro)
         if (tbody) {
             const hAcum = parseFloat(alum.horas_acumuladas || 0);
             const hObj = parseFloat(alum.horas_objetivo || 480);
             const hPrev = parseFloat(alum.horas_iniciales || 0);
             const porcentaje = Math.min(100, Math.round((hAcum / hObj) * 100));
             const fechaFormateada = formatearFecha(alum.fecha_inicio);
+            
             const avatarHtml = alum.foto_perfil_url 
-                ? `<img src="${alum.foto_perfil_url}" alt="Foto" class="w-10 h-10 rounded-full object-cover border border-indigo-500/50">`
-                : `<div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs text-slate-400">Sin foto</div>`;
+                ? `<img src="${alum.foto_perfil_url}" alt="Foto" class="w-11 h-11 rounded-full object-cover border border-slate-200 shadow-sm">`
+                : `<div class="w-11 h-11 rounded-full bg-slate-400 text-white flex flex-col items-center justify-center text-[10px] font-bold leading-tight border border-slate-300"><span>Sin</span><span>foto</span></div>`;
+
+            const esServicio = alum.tipo === 'Servicio Social';
+            const badgeClass = esServicio 
+                ? 'bg-[#E0F2FE] text-[#0369A1] border-sky-100' 
+                : 'bg-[#F3E8FF] text-[#7E22CE] border-purple-100';
 
             tbody.innerHTML += `
-                <tr class="hover:bg-slate-800/50">
-                    <td class="p-3">
+                <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="p-4">
                         ${avatarHtml}
                     </td>
-                    <td class="p-3">
-                        <div class="font-semibold text-white">${alum.nombre_completo}</div>
-                        <div class="text-xs text-indigo-400 font-mono">${alum.matricula}</div>
-                        <div class="text-xs text-slate-400">${alum.instituciones?.nombre || 'Sin institución'}</div>
+                    <td class="p-4">
+                        <div class="font-bold text-slate-900 text-sm tracking-tight">${alum.nombre_completo}</div>
+                        <div class="font-bold text-[#4338CA] text-xs">${alum.matricula}</div>
+                        <div class="text-xs text-slate-400 font-semibold uppercase">${alum.instituciones?.nombre || 'Sin institución'}</div>
                     </td>
-                    <td class="p-3">
-                        <span class="text-xs px-2 py-1 rounded-full ${alum.tipo === 'Servicio Social' ? 'bg-blue-900/50 text-blue-300' : 'bg-purple-900/50 text-purple-300'}">
+                    <td class="p-4">
+                        <span class="${badgeClass} text-xs font-bold px-3.5 py-1.5 rounded-full inline-block border">
                             ${alum.tipo}
                         </span>
                     </td>
-                    <td class="p-3 text-xs text-slate-300 font-mono">
-                        📅 ${fechaFormateada}
+                    <td class="p-4 text-xs text-slate-700 font-semibold">
+                        <span class="mr-1">📅</span> ${fechaFormateada}
                     </td>
-                    <td class="p-3 w-48">
-                        <div class="flex justify-between text-xs mb-1">
-                            <span>${porcentaje}%</span>
-                        </div>
-                        <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
-                            <div class="bg-indigo-500 h-2 rounded-full transition-all duration-500" style="width: ${porcentaje}%"></div>
+                    <td class="p-4">
+                        <div class="text-xs font-black text-slate-900 mb-1.5">${porcentaje}%</div>
+                        <div class="w-36 bg-[#64748B]/20 rounded-full h-2.5 overflow-hidden">
+                            <div class="bg-[#4F46E5] h-2.5 rounded-full transition-all duration-500" style="width: ${porcentaje}%"></div>
                         </div>
                     </td>
-                    <td class="p-3 text-xs">
-                        <div><strong class="text-emerald-400">${hAcum.toFixed(1)}</strong> / ${hObj} hrs</div>
+                    <td class="p-4 text-xs font-bold">
+                        <span class="text-[#16A34A] text-sm">${hAcum.toFixed(1)}</span> <span class="text-slate-600 font-medium">/ ${hObj} hrs</span>
                     </td>
-                    <td class="p-3 text-center space-y-1">
-                        <button onclick="editarHorasPrevias(${alum.id}, ${hPrev}, ${hAcum})" class="text-xs bg-amber-600/30 hover:bg-amber-600/50 text-amber-300 px-2 py-1 rounded transition-all block w-full">
-                            ✏️ Horas
-                        </button>
-                        <button onclick="actualizarFotoExistente(${alum.id}, '${alum.matricula}')" class="text-xs bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-300 px-2 py-1 rounded transition-all block w-full">
-                            📷 Cambiar Foto
-                        </button>
+                    <td class="p-4">
+                        <div class="flex flex-col gap-1.5 items-end">
+                            <button onclick="editarHorasPrevias(${alum.id}, ${hPrev}, ${hAcum})" class="w-32 bg-[#D97706] hover:bg-amber-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
+                                ✏️ Horas
+                            </button>
+                            <button onclick="actualizarFotoExistente(${alum.id}, '${alum.matricula}')" class="w-32 bg-[#4F46E5] hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
+                                📷 Cambiar Foto
+                            </button>
+                        </div>
                     </td>
                 </tr>
             `;
