@@ -318,5 +318,108 @@
             animate();
         })();
     </script>
+    <style>
+  /* === MEJORA DE CONTRASTE Y LEGIBILIDAD DE TABLA === */
+
+  /* 1. Fondo de fila claro y texto base bien visible */
+  #tabla-alumnos tr {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+  }
+
+  #tabla-alumnos tr:hover {
+    background-color: #f8fafc !important;
+  }
+
+  /* 2. Nombre del alumno, matrícula e institución */
+  #tabla-alumnos td .font-semibold.text-white {
+    color: #0f172a !important; /* Texto negro/gris oscuro legible */
+    font-size: 0.95rem !important;
+  }
+
+  #tabla-alumnos td .text-indigo-400 {
+    color: #4f46e5 !important; /* Azul/Índigo intenso para matrícula */
+    font-weight: 700 !important;
+  }
+
+  #tabla-alumnos td .text-slate-400 {
+    color: #475569 !important; /* Gris oscuro para institución */
+    font-weight: 500 !important;
+  }
+
+  /* 3. Badges de Tipo (Servicio Social y Residencias) */
+  #tabla-alumnos td .bg-blue-900\/50 {
+    background-color: #dbeafe !important;
+    color: #1e40af !important;
+    font-weight: 700 !important;
+    border: 1px solid #bfdbfe !important;
+  }
+
+  #tabla-alumnos td .bg-purple-900\/50 {
+    background-color: #f3e8ff !important;
+    color: #6b21a8 !important;
+    font-weight: 700 !important;
+    border: 1px solid #e9d5ff !important;
+  }
+
+  /* 4. Fechas y Porcentajes */
+  #tabla-alumnos td.text-slate-300 {
+    color: #334155 !important;
+    font-weight: 600 !important;
+  }
+
+  #tabla-alumnos td .flex.justify-between span {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+  }
+
+  #tabla-alumnos .bg-slate-700 {
+    background-color: #cbd5e1 !important; /* Fondo de barra de progreso */
+  }
+
+  #tabla-alumnos .bg-indigo-500 {
+    background-color: #4f46e5 !important; /* Relleno de barra de progreso */
+  }
+
+  /* 5. Contador de Horas */
+  #tabla-alumnos td .text-emerald-400 {
+    color: #15803d !important; /* Verde fuerte para horas acumuladas */
+  }
+
+  #tabla-alumnos td:nth-child(6) {
+    color: #334155 !important;
+    font-weight: 600 !important;
+  }
+
+  /* 6. Botones de Acción Nítidos */
+  #tabla-alumnos button.bg-amber-600\/30 {
+    background-color: #d97706 !important; /* Naranja/Ámbar sólido */
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  #tabla-alumnos button.bg-amber-600\/30:hover {
+    background-color: #b45309 !important;
+  }
+
+  #tabla-alumnos button.bg-indigo-600\/30 {
+    background-color: #4f46e5 !important; /* Índigo sólido */
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  #tabla-alumnos button.bg-indigo-600\/30:hover {
+    background-color: #4338ca !important;
+  }
+
+  /* 7. Avatar predeterminado ("Sin foto") */
+  #tabla-alumnos div.bg-slate-700 {
+    background-color: #64748b !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+  }
+</style>
 </body>
 </html>
