@@ -16,7 +16,7 @@
                         hubGreen: '#22C55E',
                         hubYellow: '#EAB308',
                         hubPink: '#E11D48',
-                        hubBg: '#0F172A'
+                        hubBg: '#f8fafc'
                     }
                 }
             }
@@ -29,27 +29,21 @@
     <script src="js/admin.js"></script>
 
     <style>
-        /* Forzar tema oscuro nativo para evitar los resaltados azules por defecto del navegador */
-        :root {
-            color-scheme: dark;
-        }
-
-        /* Personalizar el icono nativo de picker (calendario/reloj) */
+        /* Personalizar icono de picker para fondo claro */
         input[type="date"]::-webkit-calendar-picker-indicator,
         input[type="time"]::-webkit-calendar-picker-indicator {
-            filter: invert(1);
             opacity: 0.6;
             cursor: pointer;
         }
 
-        /* Asegurar que las opciones de los select tengan fondo oscuro y texto claro */
+        /* Opciones de select en fondo claro */
         select option {
-            background-color: #0F172A;
-            color: #FFFFFF;
+            background-color: #ffffff;
+            color: #0f172a;
         }
     </style>
 </head>
-<body class="bg-hubBg text-slate-100 min-h-screen p-4 md:p-8 font-sans relative overflow-x-hidden">
+<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8 font-sans relative overflow-x-hidden">
 
     <!-- CANVAS ANIMACIÓN DE RED Y NODOS TECH -->
     <canvas id="bg-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
@@ -57,26 +51,26 @@
     <div class="max-w-6xl mx-auto space-y-8 relative z-10">
         
         <!-- Header con Identidad Hub Tech -->
-        <div class="flex flex-col md:flex-row justify-between items-center border-b border-slate-800/80 pb-5 gap-4 backdrop-blur-sm bg-slate-900/40 p-4 rounded-2xl border border-slate-800/50">
+        <div class="flex flex-col md:flex-row justify-between items-center border-b border-slate-200 pb-5 gap-4 backdrop-blur-sm bg-white/80 p-4 rounded-2xl border border-slate-200/80 shadow-sm">
             <div class="flex items-center gap-4">
                 <!-- Mosaico de Cuadros Oficiales -->
                 <div class="grid grid-cols-2 gap-1 items-center">
                     <span class="w-3 h-3 rounded-sm bg-hubPink"></span>
                     <span class="w-3 h-3 rounded-sm bg-hubBlue"></span>
-                    <span class="w-3 h-3 rounded-sm bg-white"></span>
+                    <span class="w-3 h-3 rounded-sm bg-slate-800"></span>
                     <span class="w-3 h-3 rounded-sm bg-hubYellow"></span>
                     <span class="w-3 h-3 rounded-sm bg-hubGreen"></span>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-black text-white tracking-tight flex items-center gap-2">
+                    <h1 class="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
                         HUB <span class="text-hubBlue">TECH</span>
-                        <span class="text-xs bg-hubBlue/20 text-hubBlue border border-hubBlue/30 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Admin</span>
+                        <span class="text-xs bg-hubBlue/10 text-hubBlue border border-hubBlue/30 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Admin</span>
                     </h1>
-                    <p class="text-slate-400 text-xs">Gestión de Instituciones, Alumnos y Control de Asistencia</p>
+                    <p class="text-slate-500 text-xs">Gestión de Instituciones, Alumnos y Control de Asistencia</p>
                 </div>
             </div>
             
-            <a href="index.html" class="text-xs bg-slate-800/90 hover:bg-slate-700 text-slate-200 px-4 py-2.5 rounded-xl transition-all border border-slate-700/80 flex items-center gap-2 font-medium shadow-lg hover:border-hubBlue/50">
+            <a href="index.html" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl transition-all border border-slate-300 flex items-center gap-2 font-medium shadow-sm hover:border-hubBlue/50">
                 <span>←</span> Volver al Registro de Entrada/Salida
             </a>
         </div>
@@ -85,93 +79,93 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
             <!-- 1. Registrar Entrada (Admin) -->
-            <div class="bg-slate-800/80 backdrop-blur-md p-5 rounded-2xl border border-slate-700/80 shadow-xl space-y-4 hover:border-hubBlue/40 transition-all">
-                <h2 class="text-md font-bold text-hubBlue border-b border-slate-700/80 pb-2.5 flex items-center gap-2">
+            <div class="bg-white/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 shadow-lg space-y-4 hover:border-hubBlue/40 transition-all">
+                <h2 class="text-md font-bold text-hubBlue border-b border-slate-100 pb-2.5 flex items-center gap-2">
                     <span>⏱️</span> Registrar Entrada
                 </h2>
                 <form id="form-entrada" class="space-y-3">
                     <div>
-                        <label class="block text-xs text-slate-300 mb-1 font-medium">Alumno</label>
-                        <select id="entrada-alumno" required class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-hubBlue transition-all">
+                        <label class="block text-xs text-slate-600 mb-1 font-medium">Alumno</label>
+                        <select id="entrada-alumno" required class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800 focus:outline-none focus:border-hubBlue transition-all">
                             <option value="">Selecciona un alumno</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs text-slate-300 mb-1 font-medium">Fecha</label>
-                        <input type="date" id="entrada-fecha" required class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-hubBlue transition-all">
+                        <label class="block text-xs text-slate-600 mb-1 font-medium">Fecha</label>
+                        <input type="date" id="entrada-fecha" required class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800 focus:outline-none focus:border-hubBlue transition-all">
                     </div>
                     <div>
-                        <label class="block text-xs text-slate-300 mb-1 font-medium">Hora de Entrada</label>
-                        <input type="time" id="entrada-hora" required class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-hubBlue transition-all">
+                        <label class="block text-xs text-slate-600 mb-1 font-medium">Hora de Entrada</label>
+                        <input type="time" id="entrada-hora" required class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800 focus:outline-none focus:border-hubBlue transition-all">
                     </div>
-                    <button type="submit" class="w-full bg-hubBlue hover:bg-sky-500 active:scale-95 text-white py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-sky-500/20">
+                    <button type="submit" class="w-full bg-hubBlue hover:bg-sky-500 active:scale-95 text-white py-2.5 rounded-xl text-sm font-bold transition-all shadow-md shadow-sky-500/20">
                         Asignar Hora de Entrada
                     </button>
                 </form>
             </div>
 
             <!-- 2. Registrar Alumno -->
-            <div class="bg-slate-800/80 backdrop-blur-md p-5 rounded-2xl border border-slate-700/80 shadow-xl space-y-4 hover:border-hubGreen/40 transition-all">
-                <h2 class="text-md font-bold text-hubGreen border-b border-slate-700/80 pb-2.5 flex items-center gap-2">
+            <div class="bg-white/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 shadow-lg space-y-4 hover:border-hubGreen/40 transition-all">
+                <h2 class="text-md font-bold text-hubGreen border-b border-slate-100 pb-2.5 flex items-center gap-2">
                     <span>👤</span> Nuevo Alumno
                 </h2>
                 <form id="form-alumno" class="space-y-3">
                     <div>
-                        <input type="text" id="alum-matricula" required placeholder="Matrícula" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-hubGreen transition-all">
+                        <input type="text" id="alum-matricula" required placeholder="Matrícula" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800 focus:outline-none focus:border-hubGreen transition-all">
                     </div>
                     <div>
-                        <input type="text" id="alum-nombre" required placeholder="Nombre Completo" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-hubGreen transition-all">
+                        <input type="text" id="alum-nombre" required placeholder="Nombre Completo" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800 focus:outline-none focus:border-hubGreen transition-all">
                     </div>
                     <!-- Campo de Foto Oficial de Perfil -->
                     <div>
-                        <label class="block text-xs text-slate-300 mb-1 font-medium">Foto Oficial (Rostro claro)</label>
-                        <input type="file" id="alum-foto" accept="image/*" required class="w-full text-xs text-slate-300 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-hubGreen file:text-white hover:file:bg-emerald-600 cursor-pointer">
+                        <label class="block text-xs text-slate-600 mb-1 font-medium">Foto Oficial (Rostro claro)</label>
+                        <input type="file" id="alum-foto" accept="image/*" required class="w-full text-xs text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-hubGreen file:text-white hover:file:bg-emerald-600 cursor-pointer">
                     </div>
                     <div class="grid grid-cols-2 gap-2">
-                        <select id="alum-tipo" required class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-hubGreen transition-all">
+                        <select id="alum-tipo" required class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800 focus:outline-none focus:border-hubGreen transition-all">
                             <option value="Servicio Social">Servicio Social</option>
                             <option value="Residencia">Residencia / Estadía</option>
                         </select>
-                        <select id="alum-institucion" required class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-hubGreen transition-all">
+                        <select id="alum-institucion" required class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800 focus:outline-none focus:border-hubGreen transition-all">
                             <option value="">Institución</option>
                         </select>
                     </div>
                     <div class="grid grid-cols-3 gap-2">
                         <div>
-                            <label class="block text-[10px] text-slate-400 font-medium">Inicio</label>
-                            <input type="date" id="alum-fecha-inicio" required class="w-full px-2 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-hubGreen transition-all">
+                            <label class="block text-[10px] text-slate-500 font-medium">Inicio</label>
+                            <input type="date" id="alum-fecha-inicio" required class="w-full px-2 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-hubGreen transition-all">
                         </div>
                         <div>
-                            <label class="block text-[10px] text-slate-400 font-medium">Hrs Obj.</label>
-                            <input type="number" id="alum-horas-obj" value="480" required class="w-full px-2 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-hubGreen transition-all">
+                            <label class="block text-[10px] text-slate-500 font-medium">Hrs Obj.</label>
+                            <input type="number" id="alum-horas-obj" value="480" required class="w-full px-2 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-hubGreen transition-all">
                         </div>
                         <div>
-                            <label class="block text-[10px] text-slate-400 font-medium">Hrs Prev.</label>
-                            <input type="number" id="alum-horas-previas" value="0" class="w-full px-2 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white focus:outline-none focus:border-hubGreen transition-all">
+                            <label class="block text-[10px] text-slate-500 font-medium">Hrs Prev.</label>
+                            <input type="number" id="alum-horas-previas" value="0" class="w-full px-2 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-hubGreen transition-all">
                         </div>
                     </div>
-                    <button type="submit" id="btn-guardar-alumno" class="w-full bg-hubGreen hover:bg-emerald-600 active:scale-95 text-white py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-emerald-500/20">
+                    <button type="submit" id="btn-guardar-alumno" class="w-full bg-hubGreen hover:bg-emerald-600 active:scale-95 text-white py-2.5 rounded-xl text-sm font-bold transition-all shadow-md shadow-emerald-500/20">
                         Guardar Alumno
                     </button>
                 </form>
             </div>
 
             <!-- 3. Registrar Institución -->
-            <div class="bg-slate-800/80 backdrop-blur-md p-5 rounded-2xl border border-slate-700/80 shadow-xl space-y-4 hover:border-hubYellow/40 transition-all">
-                <h2 class="text-md font-bold text-hubYellow border-b border-slate-700/80 pb-2.5 flex items-center gap-2">
+            <div class="bg-white/90 backdrop-blur-md p-5 rounded-2xl border border-slate-200 shadow-lg space-y-4 hover:border-hubYellow/40 transition-all">
+                <h2 class="text-md font-bold text-hubYellow border-b border-slate-100 pb-2.5 flex items-center gap-2">
                     <span>🏛️</span> Nueva Institución
                 </h2>
                 <form id="form-institucion" class="space-y-3">
                     <div>
-                        <input type="text" id="inst-nombre" required placeholder="Nombre de la Escuela/Inst." class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-hubYellow transition-all">
+                        <input type="text" id="inst-nombre" required placeholder="Nombre de la Escuela/Inst." class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800 focus:outline-none focus:border-hubYellow transition-all">
                     </div>
                     <div>
-                        <input type="text" id="inst-carrera" placeholder="Carrera / Especialidad" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-hubYellow transition-all">
+                        <input type="text" id="inst-carrera" placeholder="Carrera / Especialidad" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800 focus:outline-none focus:border-hubYellow transition-all">
                     </div>
                     <div>
-                        <input type="text" id="inst-responsable" placeholder="Responsable o Encargado" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-hubYellow transition-all">
+                        <input type="text" id="inst-responsable" placeholder="Responsable o Encargado" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800 focus:outline-none focus:border-hubYellow transition-all">
                     </div>
-                    <button type="submit" class="w-full bg-hubYellow hover:bg-yellow-600 active:scale-95 text-slate-900 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-yellow-500/20">
+                    <button type="submit" class="w-full bg-hubYellow hover:bg-yellow-600 active:scale-95 text-slate-900 py-2.5 rounded-xl text-sm font-bold transition-all shadow-md shadow-yellow-500/20">
                         Guardar Institución
                     </button>
                 </form>
@@ -180,15 +174,15 @@
         </div>
 
         <!-- Tabla de Alumnos -->
-        <div class="bg-slate-800/80 backdrop-blur-md rounded-2xl border border-slate-700/80 shadow-2xl overflow-hidden">
-            <div class="p-4 border-b border-slate-700/80 flex justify-between items-center bg-slate-900/40">
-                <h2 class="text-md font-bold text-white flex items-center gap-2">
+        <div class="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200 shadow-xl overflow-hidden">
+            <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <h2 class="text-md font-bold text-slate-800 flex items-center gap-2">
                     <span>📋</span> Lista de Alumnos Registrados
                 </h2>
             </div>
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-slate-300">
-                    <thead class="bg-slate-900/80 text-slate-400 uppercase text-[11px] font-bold border-b border-slate-700/80 tracking-wider">
+                <table class="w-full text-left text-sm text-slate-600">
+                    <thead class="bg-slate-100/80 text-slate-500 uppercase text-[11px] font-bold border-b border-slate-200 tracking-wider">
                         <tr>
                             <th class="p-3.5">Foto</th>
                             <th class="p-3.5">Alumno</th>
@@ -199,7 +193,7 @@
                             <th class="p-3.5 text-center">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="tabla-alumnos" class="divide-y divide-slate-700/50">
+                    <tbody id="tabla-alumnos" class="divide-y divide-slate-100">
                         <!-- Se llena dinámicamente -->
                     </tbody>
                 </table>
@@ -246,7 +240,7 @@
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
                     ctx.fillStyle = this.color;
-                    ctx.globalAlpha = 0.5;
+                    ctx.globalAlpha = 0.4;
                     ctx.fill();
                 }
             }
@@ -275,7 +269,7 @@
                             ctx.moveTo(particles[i].x, particles[i].y);
                             ctx.lineTo(particles[j].x, particles[j].y);
                             ctx.strokeStyle = '#00A3E0';
-                            ctx.globalAlpha = (1 - dist / 110) * 0.15;
+                            ctx.globalAlpha = (1 - dist / 110) * 0.12;
                             ctx.lineWidth = 1;
                             ctx.stroke();
                         }
