@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acceso | Horario</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="js/config.js"></script>
+  <script src="js/login.js" defer></script>
+</head>
+
+<body class="min-h-screen bg-slate-100 flex items-center justify-center p-4">
+
+  <main class="w-full max-w-md bg-white rounded-3xl shadow-xl p-6 space-y-6">
+
+    <header class="text-center">
+      <h1 class="text-3xl font-black text-slate-900">
+        CONTROL DE HORARIOS
+      </h1>
+
+      <p class="text-sm text-slate-500 mt-1">
+        Acceso por organización
+      </p>
+    </header>
+
+    <div id="auth-message" class="hidden rounded-xl p-3 text-sm"></div>
+
+    <!-- LOGIN -->
+    <section id="panel-login" class="space-y-4">
+
+      <h2 class="text-xl font-bold text-slate-900">
+        Iniciar sesión
+      </h2>
+
+      <form id="form-login" class="space-y-3">
+
+        <input
+          id="login-email"
+          type="email"
+          required
+          placeholder="Correo electrónico"
+          class="w-full border rounded-xl px-4 py-3"
+        />
+
+        <input
+          id="login-password"
+          type="password"
+          required
+          placeholder="Contraseña"
+          class="w-full border rounded-xl px-4 py-3"
+        />
+
+        <button
+          id="btn-login"
+          type="submit"
+          class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 rounded-xl"
+        >
+          Entrar
+        </button>
+
+      </form>
+
+      <button
+        id="btn-mostrar-registro"
+        type="button"
+        class="w-full text-sky-700 font-bold text-sm"
+      >
+        Registrar nueva organización
+      </button>
+
+    </section>
+
+    <!-- REGISTRO ORGANIZACIÓN -->
+    <section id="panel-registro" class="hidden space-y-4">
+
+      <h2 class="text-xl font-bold text-slate-900">
+        Registrar organización
+      </h2>
+
+      <form id="form-registro-organizacion" class="space-y-3">
+
+        <input
+          id="reg-organizacion"
+          type="text"
+          required
+          placeholder="Nombre de la organización"
+          class="w-full border rounded-xl px-4 py-3"
+        />
+
+        <select
+          id="reg-tipo"
+          required
+          class="w-full border rounded-xl px-4 py-3"
+        >
+          <option value="Empresa">Empresa</option>
+          <option value="Escuela">Escuela</option>
+          <option value="Hospital">Hospital</option>
+          <option value="Institución">Institución</option>
+          <option value="Negocio">Negocio</option>
+          <option value="Otro">Otro</option>
+        </select>
+
+        <input
+          id="reg-admin-nombre"
+          type="text"
+          required
+          placeholder="Nombre del administrador"
+          class="w-full border rounded-xl px-4 py-3"
+        />
+
+        <input
+          id="reg-email"
+          type="email"
+          required
+          placeholder="Correo del administrador"
+          class="w-full border rounded-xl px-4 py-3"
+        />
+
+        <input
+          id="reg-password"
+          type="password"
+          minlength="8"
+          required
+          placeholder="Contraseña"
+          class="w-full border rounded-xl px-4 py-3"
+        />
+
+        <input
+          id="reg-confirm-password"
+          type="password"
+          minlength="8"
+          required
+          placeholder="Confirmar contraseña"
+          class="w-full border rounded-xl px-4 py-3"
+        />
+
+        <button
+          id="btn-registro"
+          type="submit"
+          class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl"
+        >
+          Registrar organización
+        </button>
+
+      </form>
+
+      <button
+        id="btn-volver-login"
+        type="button"
+        class="w-full text-slate-600 font-bold text-sm"
+      >
+        ← Volver
+      </button>
+
+    </section>
+
+  </main>
+
+</body>
+</html>
