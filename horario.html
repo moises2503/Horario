@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Control de Horario
+    </title>
+
+
+    <!-- TAILWIND -->
+    <script
+        src="https://cdn.tailwindcss.com">
+    </script>
+
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        hubDark: '#1E293B',
+                        hubBlue: '#00A3E0',
+                        hubGreen: '#22C55E',
+                        hubYellow: '#EAB308',
+                        hubPink: '#E11D48',
+                        hubBg: '#F8F9FA'
+                    }
+                }
+            }
+        }
+    </script>
+
+
+    <!-- SUPABASE -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+
+
+    <!-- FACE API -->
+    <script
+        defer
+        src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js">
+    </script>
+
+
+    <!-- CONFIGURACIÓN -->
+    <script
+        src="js/config.js">
+    </script>
+
+
+    <!-- BASE DE DATOS OFFLINE -->
+    <script
+        src="js/offline-db.js">
+    </script>
+
+
+    <!-- APP -->
+    <script
+        src="js/app.js">
+    </script>
+
+</head>
+
+
+<body
+    class="bg-hubBg text-slate-800 min-h-screen p-4 md:p-8 flex items-center justify-center font-sans relative overflow-x-hidden">
+
+
+    <!-- ===================================================== -->
+    <!-- ESTADO DE CONEXIÓN -->
+    <!-- ===================================================== -->
+
+    <div
+        id="estado-conexion"
+        class="fixed top-4 left-4 z-40 bg-emerald-100 text-emerald-800 border border-emerald-300 px-4 py-2 rounded-xl text-xs font-bold shadow-lg">
+
+        🟢 En línea
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- FONDO -->
+    <!-- ===================================================== -->
+
+    <canvas
+        id="bg-canvas"
+        class="fixed inset-0 w-full h-full pointer-events-none z-0">
+    </canvas>
+
+
+    <!-- ===================================================== -->
+    <!-- CERRAR SESIÓN DEL CONTROL -->
+    <!-- ===================================================== -->
+
+    <button
+        id="btn-cerrar-control"
+        type="button"
+        class="fixed top-4 right-4 z-40 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-lg transition-all hover:scale-105 active:scale-95">
+
+        Cerrar sesión
+
+    </button>
+
+
+    <!-- ===================================================== -->
+    <!-- CONTENEDOR PRINCIPAL -->
+    <!-- ===================================================== -->
+
+    <div
+        class="max-w-md w-full space-y-6 relative z-10">
+
+
+        <!-- ================================================= -->
+        <!-- IDENTIDAD DE LA EMPRESA -->
+        <!-- ================================================= -->
+
+        <div
+            class="text-center space-y-3">
+
+
+            <img
+                id="empresa-logo"
+                alt="Logo de la organización"
+                class="hidden mx-auto w-20 h-20 object-contain rounded-2xl bg-white border border-slate-200 shadow-sm">
+
+
+            <h1
+                id="empresa-nombre"
+                class="text-4xl font-black text-hubDark tracking-tight">
+
+                CONTROL DE HORARIO
+
+            </h1>
+
+
+            <p
+                id="empresa-tipo"
+                class="text-xs font-bold tracking-widest uppercase text-slate-500">
+
+                Organización
+
+            </p>
+
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- TARJETA PRINCIPAL -->
+        <!-- ================================================= -->
+
+        <div
+            class="bg-white/90 backdrop-blur-md p-6 rounded-3xl border border-slate-200/80 shadow-2xl space-y-6">
+
+
+            <!-- ============================================= -->
+            <!-- RELOJ -->
+            <!-- ============================================= -->
+
+            <div
+                class="text-center bg-slate-50/80 p-4 rounded-2xl border border-slate-100">
+
+
+                <span
+                    class="text-xs text-slate-400 uppercase tracking-widest block mb-1 font-semibold">
+
+                    Hora actual
+
+                </span>
+
+
+                <div
+                    id="reloj-digital"
+                    class="text-4xl font-mono font-bold text-hubDark tracking-widest">
+
+                    00:00:00
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ============================================= -->
+            <!-- IDENTIFICADOR DEL TRABAJADOR -->
+            <!-- ============================================= -->
+
+            <div
+                class="space-y-4">
+
+
+                <div>
+
+
+                    <label
+                        id="identificador-label"
+                        for="asistencia-matricula"
+                        class="block text-xs text-slate-500 mb-2 font-medium text-center uppercase tracking-wider">
+
+                        Ingresa tu Matrícula
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="asistencia-matricula"
+                        required
+                        autocomplete="off"
+                        placeholder="Ingresa tu identificador"
+                        class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-hubDark font-mono text-center text-xl focus:outline-none focus:ring-2 focus:ring-hubBlue transition-all">
+
+
+                </div>
+
+
+                <!-- ========================================= -->
+                <!-- BOTONES -->
+                <!-- ========================================= -->
+
+                <div
+                    class="grid grid-cols-2 gap-4 pt-2">
+
+
+                    <!-- ENTRADA -->
+
+                    <button
+                        type="button"
+                        id="btn-iniciar-entrada"
+                        class="bg-hubBlue hover:bg-sky-600 text-white py-4 rounded-xl font-bold transition-all shadow-lg flex flex-col items-center justify-center gap-1 active:scale-95">
+
+
+                        <span
+                            class="text-2xl">
+
+                            ▶️
+
+                        </span>
+
+
+                        <span>
+
+                            ENTRADA
+
+                        </span>
+
+
+                    </button>
+
+
+                    <!-- SALIDA -->
+
+                    <button
+                        type="button"
+                        id="btn-iniciar-salida"
+                        class="bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-xl font-bold transition-all shadow-lg flex flex-col items-center justify-center gap-1 active:scale-95">
+
+
+                        <span
+                            class="text-2xl">
+
+                            ⏹️
+
+                        </span>
+
+
+                        <span>
+
+                            SALIDA
+
+                        </span>
+
+
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- MODAL DE RECONOCIMIENTO FACIAL -->
+    <!-- ===================================================== -->
+
+    <div
+        id="modal-escaner"
+        class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4 hidden">
+
+
+        <!-- TEXTO -->
+
+        <div
+            class="text-center space-y-2 mb-6">
+
+
+            <h3
+                id="modal-titulo"
+                class="text-xl font-bold text-white uppercase tracking-wider">
+
+                Verificando Identidad
+
+            </h3>
+
+
+            <p
+                id="modal-subtitulo"
+                class="text-sm text-slate-300">
+
+                Alinea tu rostro dentro del círculo
+
+            </p>
+
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- CÁMARA -->
+        <!-- ================================================= -->
+
+        <div
+            id="camara-circulo"
+            class="relative w-64 h-64 rounded-full border-4 border-hubBlue shadow-[0_0_30px_rgba(0,163,224,0.5)] overflow-hidden flex items-center justify-center bg-slate-950">
+
+
+            <video
+                id="camara-preview"
+                autoplay
+                playsinline
+                muted
+                class="w-full h-full object-cover transform -scale-x-100">
+            </video>
+
+
+            <canvas
+                id="foto-canvas"
+                class="hidden">
+            </canvas>
+
+
+            <!-- ============================================= -->
+            <!-- OVERLAY ESTADO -->
+            <!-- ============================================= -->
+
+            <div
+                id="overlay-status"
+                class="absolute inset-0 flex flex-col items-center justify-center bg-slate-900/90 backdrop-blur-sm transition-all duration-300 hidden">
+
+
+                <div
+                    id="status-icon"
+                    class="text-6xl mb-2">
+                </div>
+
+
+                <p
+                    id="status-message"
+                    class="text-sm font-semibold text-center px-4 text-white">
+                </p>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- CANCELAR -->
+
+        <button
+            type="button"
+            id="btn-cancelar-escaner"
+            class="mt-8 px-6 py-2.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium border border-slate-700 transition-all">
+
+            ✖️ Cancelar
+
+        </button>
+
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- ANIMACIÓN DE FONDO -->
+    <!-- ===================================================== -->
+
+    <script>
+
+        (function () {
+
+
+            const canvas =
+                document.getElementById(
+                    "bg-canvas"
+                );
+
+
+            const ctx =
+                canvas.getContext(
+                    "2d"
+                );
+
+
+            let width;
+
+            let height;
+
+            let particles = [];
+
+
+            const colors = [
+
+                "#00A3E0",
+
+                "#22C55E",
+
+                "#EAB308",
+
+                "#E11D48"
+
+            ];
+
+
+            function resize() {
+
+
+                width =
+                    canvas.width =
+                    window.innerWidth;
+
+
+                height =
+                    canvas.height =
+                    window.innerHeight;
+
+
+            }
+
+
+            class Particle {
+
+
+                constructor() {
+
+
+                    this.x =
+                        Math.random() *
+                        width;
+
+
+                    this.y =
+                        Math.random() *
+                        height;
+
+
+                    this.vx =
+                        (
+                            Math.random() -
+                            0.5
+                        ) *
+                        0.7;
+
+
+                    this.vy =
+                        (
+                            Math.random() -
+                            0.5
+                        ) *
+                        0.7;
+
+
+                    this.radius =
+                        Math.random() *
+                        2 +
+                        1.5;
+
+
+                    this.color =
+                        colors[
+                            Math.floor(
+                                Math.random() *
+                                colors.length
+                            )
+                        ];
+
+
+                }
+
+
+                update() {
+
+
+                    this.x +=
+                        this.vx;
+
+
+                    this.y +=
+                        this.vy;
+
+
+                    if (
+                        this.x < 0 ||
+                        this.x > width
+                    ) {
+
+
+                        this.vx *=
+                            -1;
+
+
+                    }
+
+
+                    if (
+                        this.y < 0 ||
+                        this.y > height
+                    ) {
+
+
+                        this.vy *=
+                            -1;
+
+
+                    }
+
+
+                }
+
+
+                draw() {
+
+
+                    ctx.beginPath();
+
+
+                    ctx.arc(
+
+                        this.x,
+
+                        this.y,
+
+                        this.radius,
+
+                        0,
+
+                        Math.PI * 2
+
+                    );
+
+
+                    ctx.fillStyle =
+                        this.color;
+
+
+                    ctx.globalAlpha =
+                        0.5;
+
+
+                    ctx.fill();
+
+
+                }
+
+
+            }
+
+
+            function init() {
+
+
+                resize();
+
+
+                particles = [];
+
+
+                const particleCount =
+                    Math.floor(
+
+                        (
+                            width *
+                            height
+                        ) /
+                        18000
+
+                    );
+
+
+                for (
+                    let i = 0;
+                    i < particleCount;
+                    i++
+                ) {
+
+
+                    particles.push(
+                        new Particle()
+                    );
+
+
+                }
+
+
+            }
+
+
+            function animate() {
+
+
+                ctx.clearRect(
+
+                    0,
+
+                    0,
+
+                    width,
+
+                    height
+
+                );
+
+
+                for (
+                    let i = 0;
+                    i < particles.length;
+                    i++
+                ) {
+
+
+                    for (
+                        let j = i + 1;
+                        j < particles.length;
+                        j++
+                    ) {
+
+
+                        const dx =
+
+                            particles[i].x -
+
+                            particles[j].x;
+
+
+                        const dy =
+
+                            particles[i].y -
+
+                            particles[j].y;
+
+
+                        const dist =
+
+                            Math.sqrt(
+
+                                dx * dx +
+
+                                dy * dy
+
+                            );
+
+
+                        if (
+                            dist < 110
+                        ) {
+
+
+                            ctx.beginPath();
+
+
+                            ctx.moveTo(
+
+                                particles[i].x,
+
+                                particles[i].y
+
+                            );
+
+
+                            ctx.lineTo(
+
+                                particles[j].x,
+
+                                particles[j].y
+
+                            );
+
+
+                            ctx.strokeStyle =
+                                "#00A3E0";
+
+
+                            ctx.globalAlpha =
+
+                                (
+                                    1 -
+
+                                    dist /
+                                    110
+                                ) *
+
+                                0.15;
+
+
+                            ctx.lineWidth =
+                                1;
+
+
+                            ctx.stroke();
+
+
+                        }
+
+
+                    }
+
+
+                }
+
+
+                particles.forEach(
+
+                    (p) => {
+
+
+                        p.update();
+
+
+                        p.draw();
+
+
+                    }
+
+                );
+
+
+                requestAnimationFrame(
+                    animate
+                );
+
+
+            }
+
+
+            window.addEventListener(
+                "resize",
+                init
+            );
+
+
+            init();
+
+
+            animate();
+
+
+        })();
+
+    </script>
+
+
+    <!-- ===================================================== -->
+    <!-- SERVICE WORKER -->
+    <!-- ===================================================== -->
+
+    <script>
+
+        if (
+            "serviceWorker" in navigator
+        ) {
+
+
+            window.addEventListener(
+
+                "load",
+
+                async () => {
+
+
+                    try {
+
+
+                        const registro =
+
+                            await navigator
+                                .serviceWorker
+                                .register(
+                                    "/sw.js"
+                                );
+
+
+                        console.log(
+
+                            "Modo offline preparado:",
+
+                            registro.scope
+
+                        );
+
+
+                    } catch (
+                        error
+                    ) {
+
+
+                        console.error(
+
+                            "No se pudo registrar el Service Worker:",
+
+                            error
+
+                        );
+
+
+                    }
+
+
+                }
+
+            );
+
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
